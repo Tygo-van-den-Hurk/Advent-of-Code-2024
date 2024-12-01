@@ -34,7 +34,7 @@
           RUSTC_VERSION = overrides.toolchain.channel;
           RUST_BACKTRACE = 1;
 
-          buildInputs = with pkgs; [ cargo rustc rustup rust-analyzer ];
+          buildInputs = with pkgs; [ cargo rustc rustup rust-analyzer pkg-config openssl ];
           shellHook = (''
             # if the terminal supports color.
             if [[ -n "$(tput colors)" && "$(tput colors)" -gt 2 ]]; then
