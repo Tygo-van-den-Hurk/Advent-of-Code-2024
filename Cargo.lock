@@ -22,6 +22,7 @@ name = "advent_of_code_2024"
 version = "0.1.0"
 dependencies = [
  "aoc",
+ "regex",
 ]
 
 [[package]]
