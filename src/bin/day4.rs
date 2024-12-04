@@ -122,7 +122,56 @@ fn get_matches(puzzle: &Vec<Vec<char>>, x_coordinate: i32, y_coordinate: i32) ->
 
 //` Part 2
 
-pub fn part2(input: &str) -> i32 { 0 }
+pub fn part2(input: &str) -> i32 { 
+
+    let puzzle: Vec<Vec<char>>;
+    /* Creating the puzzle 2D Array searching space. */ {
+        let mut temp = Vec::new();
+        for line in input.lines() { temp.push( line.chars().collect() ); }
+        puzzle = temp;
+    }
+
+    let mut total = 0;
+    /* Counting the total instances of "XMAS" in the searching space. */ {
+        for y in 0..puzzle.len() {
+            for x in 0..puzzle[y].len() {
+                if puzzle[y][x] != 'A' { continue; }
+                println!("\t<A-found x=\"{x}\" y=\"{y}\">");
+                let total_matches = get_matches_2( &puzzle, x as i32, y as i32 );
+                println!("\t\t<search-total>{total_matches}</search-total>");
+                println!("\t</A-found>");
+                total += total_matches;
+            }
+        }
+    }
+
+    return total;
+}
+
+fn get_matches_2(puzzle: &Vec<Vec<char>>, x_coordinate: i32, y_coordinate: i32) -> i32 {
+
+    /* Checking space-constrained pre-conditions */ {
+        if y_coordinate < 1 { return 0; }
+        if y_coordinate + 1 >= puzzle.len() as i32 { return 0; }
+        if x_coordinate < 1 { return 0; }
+        if x_coordinate + 1 >= puzzle[y_coordinate as usize].len() as i32 { return 0; }
+    }
+
+    /* Checking if there is a match */ {
+        let y = y_coordinate as usize;
+        let x = x_coordinate as usize;
+        if ( puzzle[y - 1][x - 1] == 'M' &&  puzzle[y + 1][x + 1] == 'S' ) &&
+           ( puzzle[y - 1][x + 1] == 'M' &&  puzzle[y + 1][x - 1] == 'S' ) { return 1; }
+        if ( puzzle[y + 1][x + 1] == 'M' &&  puzzle[y - 1][x - 1] == 'S' ) &&
+           ( puzzle[y - 1][x + 1] == 'M' &&  puzzle[y + 1][x - 1] == 'S' ) { return 1; } 
+        if ( puzzle[y - 1][x - 1] == 'M' &&  puzzle[y + 1][x + 1] == 'S' ) &&
+           ( puzzle[y + 1][x - 1] == 'M' &&  puzzle[y - 1][x + 1] == 'S' ) { return 1; }
+        if ( puzzle[y + 1][x + 1] == 'M' &&  puzzle[y - 1][x - 1] == 'S' ) &&
+           ( puzzle[y + 1][x - 1] == 'M' &&  puzzle[y - 1][x + 1] == 'S' ) { return 1; } 
+    }
+
+    return 0;
+}
 
 //` Test
 
