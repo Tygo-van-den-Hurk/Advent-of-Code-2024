@@ -26,16 +26,6 @@ enum Direction { Up, Right, Down, Left }
 
 impl Direction {
 
-    fn from_str(input: &char) -> Option<Direction> {
-        return match input {
-            '^' => Some(Direction::Up),
-            '>' => Some(Direction::Right),
-            'V' => Some(Direction::Down),
-            '<' => Some(Direction::Left),
-            _ => None
-        };
-    }
-
     fn turn(&mut self) {
         *self = match *self {
             Direction::Up    => Direction::Right,
@@ -117,7 +107,7 @@ impl<'a> fmt::Display for MapTile {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             MapTile::Obstacle => write!(f, "#"),
-            MapTile::Empty => write!(f, "."),
+            MapTile::Empty => write!(f, " "),
             MapTile::Guard(guard) => write!(f, "{guard}"),
             MapTile::Traveled => write!(f, "+"),
         }
@@ -252,7 +242,190 @@ pub fn part1(input: &str) -> i32 {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Part 2 out of 2 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 
-pub fn part2(_: &str) -> i32 { 0 }
+
+//` Map Tiles
+
+enum MapTile2 {
+    Obstacle,
+    Empty,
+    Guard(Guard),
+    Traveled(Direction),
+}
+
+impl MapTile2 {
+
+    fn move_guard(&mut self) -> Option<Guard> {
+        match std::mem::replace(self, MapTile2::Empty) {
+            MapTile2::Guard(guard) => {
+                *self = MapTile2::Traveled(guard.direction.clone());
+                Some(guard)
+            }
+            _ => None,
+        }
+    }
+
+    fn has_guard(&self) -> bool { matches!(self, MapTile2::Guard(_)) }
+}
+
+impl std::fmt::Debug for MapTile2 {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            MapTile2::Obstacle => write!(f, "#"),
+            MapTile2::Empty => write!(f, " "),
+            MapTile2::Guard(guard) => write!(f, "{guard}"),
+            MapTile2::Traveled(direction) => write!(f, "{direction}"),
+        }
+    }
+}
+
+impl PartialEq for MapTile2 {
+    fn eq(&self, other: &Self) -> bool {
+        match (self, other) {
+            ( MapTile2::Obstacle,    MapTile2::Obstacle    ) => true,
+            ( MapTile2::Empty,       MapTile2::Empty       ) => true,
+            ( MapTile2::Guard(_),    MapTile2::Guard(_)    ) => true,
+            ( MapTile2::Traveled(_), MapTile2::Traveled(_) ) => true,
+            _ => false,
+        }
+    }
+}
+
+impl<'a> fmt::Display for MapTile2 {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            MapTile2::Obstacle => write!(f, "#"),
+            MapTile2::Empty => write!(f, " "),
+            MapTile2::Guard(guard) => write!(f, "{guard}"),
+            MapTile2::Traveled(direction) => write!(f, "{direction}"),
+        }
+    }
+}
+
+pub fn part2(input: &str) -> i32 {
+
+    let mut guard_position: Option<Point> = None;
+
+    let mut map: Vec<Vec<MapTile2>> = Vec::new();
+    /* Getting and creating the map */ {
+        for (y, line) in input.lines().enumerate() { let y = y as i32;
+
+            let mut map_row = Vec::new();
+            for (x, character) in line.chars().enumerate() { let x = x as i32;
+
+                let tile = match character {
+                    '.' => MapTile2::Empty,
+                    '#' => MapTile2::Obstacle,
+                    '^' => MapTile2::Guard(Guard { direction : Direction::Up    }),
+                    '>' => MapTile2::Guard(Guard { direction : Direction::Right }),
+                    'V' => MapTile2::Guard(Guard { direction : Direction::Down  }),
+                    '<' => MapTile2::Guard(Guard { direction : Direction::Left  }),
+                    _ => panic!("Unrecognised input: \"{character}\".")
+                };
+        
+                if tile.has_guard() { guard_position = Some(Point {x, y}); }
+                map_row.push(tile);
+            }
+
+            map.push(map_row);
+        }
+    }
+
+    if guard_position.is_none() { panic!("No guard found on the map"); }
+    let mut guard_position = guard_position.unwrap();
+
+    let mut total = 0;
+    /* Simulating the guard on the input */ {
+        loop {
+            println!("");
+            println!("Total at this time: {}", total);
+            println!("Map at this point ({:?}) in time:", guard_position);
+            for row in map.iter() {
+                for tile in row.iter() {
+                    print!("{tile}");
+                }
+                println!();
+            }
+
+            let new_tile_point = match &map[guard_position.y as usize][guard_position.x as usize] {
+                MapTile2::Guard(guard) => match guard.direction {
+                    Direction::Up    => Point { x: guard_position.x,     y: guard_position.y - 1 },
+                    Direction::Right => Point { x: guard_position.x + 1, y: guard_position.y     },
+                    Direction::Down  => Point { x: guard_position.x,     y: guard_position.y + 1 },
+                    Direction::Left  => Point { x: guard_position.x - 1 ,y: guard_position.y     }
+                },
+                _ => panic!("expected old_tile to be of type, but this wasn't the case.")
+            };
+
+            if new_tile_point.y < 0 {
+                println!("Case : new_tile_point.y < 0 --> Satisfied");
+                let direction = match &map[guard_position.y as usize][guard_position.x as usize] {
+                    MapTile2::Guard(guard) => guard.direction.clone(),
+                    _ => panic!("No guard on expected tile")
+                };
+                map[guard_position.y as usize][guard_position.x as usize] = MapTile2::Traveled(direction); 
+                break; 
+            }
+            if new_tile_point.x < 0 {
+                println!("Case : new_tile_point.x < 0 --> Satisfied");
+                let direction = match &map[guard_position.y as usize][guard_position.x as usize] {
+                    MapTile2::Guard(guard) => guard.direction.clone(),
+                    _ => panic!("No guard on expected tile")
+                };
+                map[guard_position.y as usize][guard_position.x as usize] = MapTile2::Traveled(direction); 
+                break; 
+            }
+            if new_tile_point.y >= map.len() as i32 {
+                println!("Case : new_tile_point.y >= map.len() --> Satisfied");
+                let direction = match &map[guard_position.y as usize][guard_position.x as usize] {
+                    MapTile2::Guard(guard) => guard.direction.clone(),
+                    _ => panic!("No guard on expected tile")
+                };
+                map[guard_position.y as usize][guard_position.x as usize] = MapTile2::Traveled(direction); 
+                break; 
+            }
+            if new_tile_point.x >= map[new_tile_point.y as usize].len() as i32 {
+                println!("Case : new_tile_point.x >= map[new_tile_point.y as usize].len() --> Satisfied");
+                let direction = match &map[guard_position.y as usize][guard_position.x as usize] {
+                    MapTile2::Guard(guard) => guard.direction.clone(),
+                    _ => panic!("No guard on expected tile")
+                };
+                map[guard_position.y as usize][guard_position.x as usize] = MapTile2::Traveled(direction); 
+                break; 
+            }
+            
+    
+            match &map[new_tile_point.y as usize][new_tile_point.x as usize] {
+                MapTile2::Obstacle => {
+                    println!("Next tile is of type MapTile::Obstacle.");
+                    match &mut map[guard_position.y as usize][guard_position.x as usize] {
+                        MapTile2::Guard(guard) => { 
+                            println!("guard.direction: {} (before)", guard.direction);
+                            guard.direction.turn();
+                            println!("guard.direction: {} (after)", guard.direction);
+                        },
+                        _ => panic!("The old tile should always be of type MapTile::Guard(guard).")
+                    }
+                },
+                MapTile2::Empty => {
+                    println!("Next tile is of type MapTile::Empty.");
+                    let guard = map[guard_position.y as usize][guard_position.x as usize].move_guard().unwrap();
+                    map[new_tile_point.y as usize][new_tile_point.x as usize] = MapTile2::Guard(guard);
+                    guard_position = new_tile_point;
+                },
+                MapTile2::Traveled(_) => {
+                    total += 1;
+                    println!("Next tile is of type MapTile::Empty or MapTile::Traveled.");
+                    let guard = map[guard_position.y as usize][guard_position.x as usize].move_guard().unwrap();
+                    map[new_tile_point.y as usize][new_tile_point.x as usize] = MapTile2::Guard(guard);
+                    guard_position = new_tile_point;
+                }
+                _ => panic!("Unknown case.")
+            }
+        }
+    }
+
+    return total;
+}
 
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Tests ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
