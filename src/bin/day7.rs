@@ -2,18 +2,9 @@
 
 
 fn main() {
-
-    const INPUT: &str = include_str!("../doc/day6.txt");
-    
-    /* Solving Part 1 based on the input */ {
-        let result: i32 = part1::solve(INPUT);
-        println!("The solution to part 1 is: \"{result}\".");
-    }
-        
-    /* Solving Part 1 based on the input */ {
-        let result: i32 = part2::solve(INPUT);
-        println!("The solution to part 2 is: \"{result}\".");
-    }
+    const INPUT: &str = include_str!("../doc/day7.txt");
+    println!("The solution to part 1 is: \"{}\".", part1::solve(INPUT));
+    println!("The solution to part 2 is: \"{}\".", part2::solve(INPUT));
 }
 
 
@@ -22,8 +13,61 @@ fn main() {
 
 mod part1 {
 
-    pub fn solve(input: &str) -> i32 { 0 }
+    use std::collections::HashSet;
 
+    #[derive(Debug, Clone)]
+    struct Equation { total: usize, terms: Vec<usize> } impl Equation {
+        
+        fn is_possible(&self) -> bool { 
+            
+            fn recurse(terms: &Vec<usize>) -> HashSet<usize> {
+                
+                if terms.len() == 1 { return HashSet::from_iter(terms.iter().cloned()); }
+
+                let mut clone = terms.clone();
+                let first  = clone.remove(0);
+                let second = clone.remove(0);
+                
+                let mut copy1 = clone.clone();
+                copy1.insert(0, first + second);
+                let set1 = recurse(&copy1);
+
+                let mut copy2 = clone.clone();
+                copy2.insert(0, first * second);
+                let set2 = recurse(&copy2);
+
+                let mut result = HashSet::new();
+                result.extend(set1);
+                result.extend(set2);
+
+                return result;
+            }
+
+            let recursion_result = recurse(&self.terms);
+            return recursion_result.contains(&self.total);
+        }
+    }
+
+    pub fn solve(input: &str) -> usize { 
+
+        let all_equations: Vec<Equation> = input.lines()
+            .map( | line | {
+                let (left_side, right_side) = line.split_once(":").unwrap();
+                let total = left_side.parse::<usize>().unwrap();
+                let terms = right_side.split(" ")
+                    .filter( |string_slice| !string_slice.is_empty() )
+                    .map(|element| { element.parse::<usize>().unwrap() } )
+                    .collect();
+                let equation = Equation { total, terms };
+                return equation; 
+            }).collect();
+
+        let possible_equations: Vec<&Equation> = all_equations.iter()
+            .filter(| equation | equation.is_possible() )
+            .collect();
+
+        return possible_equations.iter().fold(0, |total, equation| total + equation.total );
+    }
 }
 
 
