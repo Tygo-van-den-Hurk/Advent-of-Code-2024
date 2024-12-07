@@ -31,3 +31,4 @@ I am using it to learn [Rust](http://rust-lang.org/). Rust is a fast, memory-saf
 - [Day 4](./src/bin/day4.rs)
 - [Day 5](./src/bin/day5.rs)
 - [Day 6](./src/bin/day6.rs)
+- [Day 7](./src/bin/day7.rs)
