@@ -1,0 +1,64 @@
+file_system: [Filled(0), Filled(0), Empty, Empty, Empty, Filled(1), Filled(1), Filled(1), Empty, Empty, Empty, Filled(2), Empty, Empty, Empty, Filled(3), Filled(3), Filled(3), Empty, Filled(4), Filled(4), Empty, Filled(5), Filled(5), Filled(5), Filled(5), Empty, Filled(6), Filled(6), Filled(6), Filled(6), Empty, Filled(7), Filled(7), Filled(7), Empty, Filled(8), Filled(8), Filled(8), Filled(8), Filled(9), Filled(9)]
+
+loop 2: [Filled(0), Filled(0), Empty, Empty, Empty, Filled(1), Filled(1), Filled(1), Empty, Empty, Empty, Filled(2), Empty, Empty, Empty, Filled(3), Filled(3), Filled(3), Empty, Filled(4), Filled(4), Empty, Filled(5), Filled(5), Filled(5), Filled(5), Empty, Filled(6), Filled(6), Filled(6), Filled(6), Empty, Filled(7), Filled(7), Filled(7), Empty, Filled(8), Filled(8), Filled(8), Filled(8), Filled(9), Filled(9)]
+gap_index: 2
+trailing_file_block_index: 41
+file_system: ##   ###   #   ### ## #### #### ### ######
+
+loop 2: [Filled(0), Filled(0), Filled(9), Empty, Empty, Filled(1), Filled(1), Filled(1), Empty, Empty, Empty, Filled(2), Empty, Empty, Empty, Filled(3), Filled(3), Filled(3), Empty, Filled(4), Filled(4), Empty, Filled(5), Filled(5), Filled(5), Filled(5), Empty, Filled(6), Filled(6), Filled(6), Filled(6), Empty, Filled(7), Filled(7), Filled(7), Empty, Filled(8), Filled(8), Filled(8), Filled(8), Filled(9), Empty]
+gap_index: 3
+trailing_file_block_index: 40
+file_system: ###  ###   #   ### ## #### #### ### ##### 
+
+loop 2: [Filled(0), Filled(0), Filled(9), Filled(9), Empty, Filled(1), Filled(1), Filled(1), Empty, Empty, Empty, Filled(2), Empty, Empty, Empty, Filled(3), Filled(3), Filled(3), Empty, Filled(4), Filled(4), Empty, Filled(5), Filled(5), Filled(5), Filled(5), Empty, Filled(6), Filled(6), Filled(6), Filled(6), Empty, Filled(7), Filled(7), Filled(7), Empty, Filled(8), Filled(8), Filled(8), Filled(8), Empty, Empty]
+gap_index: 4
+trailing_file_block_index: 39
+file_system: #### ###   #   ### ## #### #### ### ####  
+
+loop 2: [Filled(0), Filled(0), Filled(9), Filled(9), Filled(8), Filled(1), Filled(1), Filled(1), Empty, Empty, Empty, Filled(2), Empty, Empty, Empty, Filled(3), Filled(3), Filled(3), Empty, Filled(4), Filled(4), Empty, Filled(5), Filled(5), Filled(5), Filled(5), Empty, Filled(6), Filled(6), Filled(6), Filled(6), Empty, Filled(7), Filled(7), Filled(7), Empty, Filled(8), Filled(8), Filled(8), Empty, Empty, Empty]
+gap_index: 8
+trailing_file_block_index: 38
+file_system: ########   #   ### ## #### #### ### ###   
+
+loop 2: [Filled(0), Filled(0), Filled(9), Filled(9), Filled(8), Filled(1), Filled(1), Filled(1), Filled(8), Empty, Empty, Filled(2), Empty, Empty, Empty, Filled(3), Filled(3), Filled(3), Empty, Filled(4), Filled(4), Empty, Filled(5), Filled(5), Filled(5), Filled(5), Empty, Filled(6), Filled(6), Filled(6), Filled(6), Empty, Filled(7), Filled(7), Filled(7), Empty, Filled(8), Filled(8), Empty, Empty, Empty, Empty]
+gap_index: 9
+trailing_file_block_index: 37
+file_system: #########  #   ### ## #### #### ### ##    
+
+loop 2: [Filled(0), Filled(0), Filled(9), Filled(9), Filled(8), Filled(1), Filled(1), Filled(1), Filled(8), Filled(8), Empty, Filled(2), Empty, Empty, Empty, Filled(3), Filled(3), Filled(3), Empty, Filled(4), Filled(4), Empty, Filled(5), Filled(5), Filled(5), Filled(5), Empty, Filled(6), Filled(6), Filled(6), Filled(6), Empty, Filled(7), Filled(7), Filled(7), Empty, Filled(8), Empty, Empty, Empty, Empty, Empty]
+gap_index: 10
+trailing_file_block_index: 36
+file_system: ########## #   ### ## #### #### ### #     
+
+loop 2: [Filled(0), Filled(0), Filled(9), Filled(9), Filled(8), Filled(1), Filled(1), Filled(1), Filled(8), Filled(8), Filled(8), Filled(2), Empty, Empty, Empty, Filled(3), Filled(3), Filled(3), Empty, Filled(4), Filled(4), Empty, Filled(5), Filled(5), Filled(5), Filled(5), Empty, Filled(6), Filled(6), Filled(6), Filled(6), Empty, Filled(7), Filled(7), Filled(7), Empty, Empty, Empty, Empty, Empty, Empty, Empty]
+gap_index: 12
+trailing_file_block_index: 34
+file_system: ############   ### ## #### #### ###       
+
+loop 2: [Filled(0), Filled(0), Filled(9), Filled(9), Filled(8), Filled(1), Filled(1), Filled(1), Filled(8), Filled(8), Filled(8), Filled(2), Filled(7), Empty, Empty, Filled(3), Filled(3), Filled(3), Empty, Filled(4), Filled(4), Empty, Filled(5), Filled(5), Filled(5), Filled(5), Empty, Filled(6), Filled(6), Filled(6), Filled(6), Empty, Filled(7), Filled(7), Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty]
+gap_index: 13
+trailing_file_block_index: 33
+file_system: #############  ### ## #### #### ##        
+
+loop 2: [Filled(0), Filled(0), Filled(9), Filled(9), Filled(8), Filled(1), Filled(1), Filled(1), Filled(8), Filled(8), Filled(8), Filled(2), Filled(7), Filled(7), Empty, Filled(3), Filled(3), Filled(3), Empty, Filled(4), Filled(4), Empty, Filled(5), Filled(5), Filled(5), Filled(5), Empty, Filled(6), Filled(6), Filled(6), Filled(6), Empty, Filled(7), Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty]
+gap_index: 14
+trailing_file_block_index: 32
+file_system: ############## ### ## #### #### #         
+
+loop 2: [Filled(0), Filled(0), Filled(9), Filled(9), Filled(8), Filled(1), Filled(1), Filled(1), Filled(8), Filled(8), Filled(8), Filled(2), Filled(7), Filled(7), Filled(7), Filled(3), Filled(3), Filled(3), Empty, Filled(4), Filled(4), Empty, Filled(5), Filled(5), Filled(5), Filled(5), Empty, Filled(6), Filled(6), Filled(6), Filled(6), Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty]
+gap_index: 18
+trailing_file_block_index: 30
+file_system: ################## ## #### ####           
+
+loop 2: [Filled(0), Filled(0), Filled(9), Filled(9), Filled(8), Filled(1), Filled(1), Filled(1), Filled(8), Filled(8), Filled(8), Filled(2), Filled(7), Filled(7), Filled(7), Filled(3), Filled(3), Filled(3), Filled(6), Filled(4), Filled(4), Empty, Filled(5), Filled(5), Filled(5), Filled(5), Empty, Filled(6), Filled(6), Filled(6), Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty]
+gap_index: 21
+trailing_file_block_index: 29
+file_system: ##################### #### ###            
+
+loop 2: [Filled(0), Filled(0), Filled(9), Filled(9), Filled(8), Filled(1), Filled(1), Filled(1), Filled(8), Filled(8), Filled(8), Filled(2), Filled(7), Filled(7), Filled(7), Filled(3), Filled(3), Filled(3), Filled(6), Filled(4), Filled(4), Filled(6), Filled(5), Filled(5), Filled(5), Filled(5), Empty, Filled(6), Filled(6), Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty]
+gap_index: 26
+trailing_file_block_index: 28
+file_system: ########################## ##             
+file_system: [Filled(0), Filled(0), Filled(9), Filled(9), Filled(8), Filled(1), Filled(1), Filled(1), Filled(8), Filled(8), Filled(8), Filled(2), Filled(7), Filled(7), Filled(7), Filled(3), Filled(3), Filled(3), Filled(6), Filled(4), Filled(4), Filled(6), Filled(5), Filled(5), Filled(5), Filled(5), Filled(6), Filled(6), Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty]
+The solution to part 1 is: "1928".
+The solution to part 2 is: "19".
