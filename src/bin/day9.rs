@@ -93,7 +93,142 @@ mod part1 {
 
 mod part2 {
 
-    pub fn solve(input: &str) -> usize { input.len() }
+    use std::fmt;
+
+    /**
+     * Represents a single block in the file system.
+     */
+    #[derive(Debug, Clone, PartialEq, Eq, Hash)]
+    struct FileSystemBlock { 
+        size: u32, 
+        id: u32, 
+        is_file: bool, 
+        has_been_moved: bool
+    } impl<'a> fmt::Display for FileSystemBlock {
+
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            match self.is_file {
+                false => write!(f, "{}", ".".repeat(self.size as usize)),
+                true  => match self.has_been_moved {
+                    true  => write!(f, "{}", "M".repeat(self.size as usize)),
+                    false => write!(f, "{}", format!("{}", self.id ).repeat(self.size as usize)),
+                },
+            }
+        }
+    }
+    
+    /**
+     * Creates a Vec<FileSystemBlock> representing the state of the file system from input string.
+     * Panics if the input is not a string of numbers.
+     */
+    fn parse_file_system(input: &str) -> Vec<FileSystemBlock> {
+        let mut file_system: Vec<FileSystemBlock> = Vec::new();
+        let mut id = 0;
+        let mut current_char_symbolises_empty_space: bool = false;
+        for character in input.chars() {
+            
+            let block_length = (character as u32) - 48;
+            if block_length > 9 { panic!("The character {} is not an integer", character); }
+
+            file_system.push(FileSystemBlock { 
+                size: block_length, 
+                id: id, 
+                is_file: ! current_char_symbolises_empty_space, 
+                has_been_moved: false 
+            });
+            
+            if ! current_char_symbolises_empty_space { id += 1; }
+            current_char_symbolises_empty_space = ! current_char_symbolises_empty_space;
+        }
+        
+        return file_system;
+    }
+
+    fn restructure_file_system(file_system: &mut Vec<FileSystemBlock>) {
+        loop { 
+            
+            if file_system.iter().position(|f| !f.has_been_moved) == None { return; }
+
+            let file_system_block_to_move_index: usize;
+            /* Getting the index of a file block that hasn't been attempted to move yet */ {
+                let index = file_system.iter().rposition(|f| ! f.has_been_moved && f.is_file);
+                if index.is_none() { return; }
+                file_system_block_to_move_index = index.unwrap();
+                file_system[file_system_block_to_move_index].has_been_moved = true;
+            }
+
+            let empty_file_system_block_index: usize;
+            /* Getting the index of the first empty size that meets the requirements */ {
+                let requested_minimum_space = file_system[file_system_block_to_move_index].size;
+                let index = file_system.iter().position(|f| f.size >= requested_minimum_space && ! f.is_file );
+                if index.is_none() { continue; }
+                empty_file_system_block_index = index.unwrap();
+                if empty_file_system_block_index > file_system_block_to_move_index { continue; }
+            }          
+            
+            /* Swapping the files around if they are the same size */ {
+                let file_block = & file_system[file_system_block_to_move_index];
+                let empty_file_block = & file_system[empty_file_system_block_index];
+                if file_block.size == empty_file_block.size {
+                    file_system.swap(file_system_block_to_move_index, empty_file_system_block_index);
+                    continue;
+                }    
+            }
+            
+            /* Creating and swapping File around if that's not the case. */ {
+                let size_of_file = file_system[file_system_block_to_move_index].size;
+                let size_of_empty_space = file_system[empty_file_system_block_index].size;
+                let empty_file_block = FileSystemBlock {
+                    is_file: false,
+                    id: 0,
+                    has_been_moved: true,
+                    size: size_of_file
+                };
+                file_system.swap(empty_file_system_block_index, file_system_block_to_move_index);
+                file_system[file_system_block_to_move_index] = empty_file_block;
+                let remaining_space = size_of_empty_space - size_of_file;
+                let mini_empty_file_block = FileSystemBlock {
+                    is_file: false,
+                    id: 0,
+                    has_been_moved: true,
+                    size: remaining_space,
+                };
+                let one_to_the_right = empty_file_system_block_index + 1;
+                file_system.insert(one_to_the_right, mini_empty_file_block);
+            }
+        }
+    }
+
+    /**
+     * Hashes the file system as described in the assignment.
+     */
+    fn hash_file_system(file_system: Vec<FileSystemBlock>) -> usize {
+        let mut total: u64 = 0;
+        let mut file_system_index = 0;
+        for file_system_block in file_system.iter() {
+            match file_system_block.is_file {
+                true => {
+                    for index in file_system_index .. file_system_index + file_system_block.size {
+                        total += (file_system_block.id * index) as u64;
+                    }
+                    file_system_index += file_system_block.size;
+                },
+                false => file_system_index += file_system_block.size,
+            }
+
+        }
+
+        return total as usize;
+    }
+
+    /**
+     * Solves the part 2 of the 8th day challenge of Advent of Code.
+     */
+    pub fn solve(input: &str) -> usize { 
+        let mut file_system: Vec<FileSystemBlock> = parse_file_system(input);
+        restructure_file_system(&mut file_system);
+        return hash_file_system(file_system);
+    }
 
 }
 
