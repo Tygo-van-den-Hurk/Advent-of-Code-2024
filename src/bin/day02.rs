@@ -2,7 +2,7 @@
 
 use std::{fmt::{self}, i32};
 
-const INPUT: &str = include_str!("../doc/day2.txt");
+const INPUT: &str = include_str!("../doc/day02.txt");
 
 fn main() {
     

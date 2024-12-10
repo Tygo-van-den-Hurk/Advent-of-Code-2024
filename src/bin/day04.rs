@@ -1,4 +1,4 @@
-const INPUT: &str = include_str!("../doc/day4.txt");
+const INPUT: &str = include_str!("../doc/day04.txt");
 
 fn main() {
     

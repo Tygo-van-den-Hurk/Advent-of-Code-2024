@@ -2,7 +2,7 @@
 
 
 fn main() {
-    const INPUT: &str = include_str!("../doc/day8.txt");
+    const INPUT: &str = include_str!("../doc/day08.txt");
     println!("The solution to part 1 is: \"{}\".", part1::solve(INPUT));
     println!("The solution to part 2 is: \"{}\".", part2::solve(INPUT));
 }

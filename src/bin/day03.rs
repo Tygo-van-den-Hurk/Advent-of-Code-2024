@@ -1,6 +1,6 @@
 use regex::Regex;
 
-const INPUT: &str = include_str!("../doc/day3.txt");
+const INPUT: &str = include_str!("../doc/day03.txt");
 
 fn main() {
     

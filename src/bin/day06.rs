@@ -4,7 +4,7 @@ use std::fmt;
 
 fn main() {
 
-    const INPUT: &str = include_str!("../doc/day6.txt");
+    const INPUT: &str = include_str!("../doc/day06.txt");
     
     /* Solving Part 1 based on the input */ {
         let result: i32 = part1(INPUT);
