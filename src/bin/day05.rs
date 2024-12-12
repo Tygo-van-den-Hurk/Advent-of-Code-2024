@@ -1,21 +1,12 @@
-use regex::Regex;
-
-const INPUT: &str = include_str!("../doc/day05.txt");
-
 fn main() {
-    
-    /* Solving Part 1 based on the input */ {
-        let result: i32 = part1(INPUT);
-        println!("The solution to part 1 is: \"{result}\".");
-    }
-        
-    /* Solving Part 1 based on the input */ {
-        let result: i32 = part2(INPUT);
-        println!("The solution to part 2 is: \"{result}\".");
-    }
+    const INPUT: &str = include_str!("../doc/day05.txt");
+    // println!("The solution to part 1 is: \"{}\".", part1(INPUT));
+    println!("The solution to part 2 is: \"{}\".", part2::solve(INPUT));
 }
 
 //` Rule
+
+use regex::Regex;
 
 struct Rule {
     first_page: i32,
@@ -107,7 +98,85 @@ pub fn part1(input: &str) -> i32 {
 
 //` Part 2
 
-pub fn part2(input: &str) -> i32 { 0 }
+pub mod part2 {
+
+    use std::{cmp::Ordering, collections::HashSet, str::FromStr, usize};
+
+    /// A simple abstraction of a Rule. A rule dictates if both pages exist in a collection, which of them should come
+    /// first.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    struct Rule { first_page: Page, later_page: Page, }
+
+    /// A simple abstraction of a Page. A page has a number by which it is sorted.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    struct Page { number: usize } impl Page {
+        
+        fn goes_before(&self, other: &Self, rules: &HashSet<Rule>) -> Ordering {
+            if rules.contains(&Rule { first_page: self.clone(), later_page: other.clone() }) {
+                Ordering::Less
+            } else if rules.contains(&Rule { first_page: other.clone(), later_page: self.clone() }) {
+                Ordering::Greater
+            } else {
+                Ordering::Equal
+            }
+        }
+
+    } impl FromStr for Page { type Err = std::num::ParseIntError;
+    
+        fn from_str(string: &str) -> Result<Self, Self::Err> {
+            let number = string.parse::<usize>()?;
+            return Ok(Page { number });
+        }
+    }
+
+    /// The function that solves the puzzle 
+    pub fn solve(input: &str) -> usize { 
+
+        let mut lines = input.lines();
+
+        let mut rules: HashSet<Rule> = HashSet::new();
+        /* Creating the rules */ {
+            for line in &mut lines {
+                if line.is_empty() { break; }
+                let (first_page, later_page) = line.split_once("|").unwrap();
+                let first_page = first_page.parse().unwrap();
+                let later_page = later_page.parse().unwrap();
+                rules.insert(Rule { first_page, later_page });
+            }
+        }
+
+        let mut manual: Vec<Vec<Page>> = Vec::new();
+        /* Creating the manual pages */ {
+            for line in lines { 
+                let pages = line.split(",")
+                    .map(|page| page.parse::<Page>().unwrap() )
+                    .collect();
+                manual.push(pages);
+            }
+        }
+    
+        let broken_rules: Vec<Vec<Page>>;
+        /* filtering for all the rules that are broken */ {
+            broken_rules = manual.into_iter().filter( | pages | {
+                for (index, first_page) in pages.iter().enumerate() {
+                    for later_index in index..pages.len() {
+                        let later_page = pages[later_index];
+                        if rules.contains(&Rule { first_page: later_page, later_page: *first_page }) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }).collect();
+        }
+
+        return broken_rules.into_iter()
+            .map(|mut pages| {
+                pages.sort_by(|book1, book2| book1.goes_before(book2, &rules));
+                return pages[pages.len() / 2].number
+            }).sum();
+    }
+}
 
 //` Test
 
@@ -149,7 +218,7 @@ mod tests {
 
     #[test]
     fn test_part2() {
-        assert_eq!(part2("47|53
+        assert_eq!(part2::solve("47|53
 97|13
 97|61
 97|47
