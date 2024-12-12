@@ -197,6 +197,30 @@ MIIIIIJJEE
 MIIISIJEEE
 MMMISSJEEE"), 1930);
     }
+
+    #[test]
+    fn test_part2_simple() {
+        assert_eq!(part1::solve("AAAA\nBBCD\nBBCC\nEEEC"), 80);
+    }
+
+    #[test]
+    fn test_part2_medium() {
+        assert_eq!(part1::solve("OOOOO\nOXOXO\nOOOOO\nOXOXO\nOOOOO"), 436);
+    }
+
+    #[test]
+    fn test_part2_hard() {
+        assert_eq!(part1::solve("RRRRIICCFF
+    RRRRIICCCF
+    VVRRRCCFFF
+    VVRCCCJFFF
+    VVVVCJJCFE
+    VVIVCCJJEE
+    VVIIICJJEE
+    MIIIIIJJEE
+    MIIISIJEEE
+    MMMISSJEEE"), 1206);
+    }
 }
 
 
