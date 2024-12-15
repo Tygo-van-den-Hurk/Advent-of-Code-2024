@@ -15,8 +15,199 @@ fn main() {
 /// The part that solves the first part of the puzzle.
 mod part1 {
 
+    use std::fmt;
+    use std::ops::Add;
+    use std::collections::VecDeque;
+
+    //` - - - - - struct Tile - - - - -
+
+    /// An abstraction for any tile on the map
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Tile { Wall, Robot, Crate, Empty, } impl Tile {
+        
+        /// Returns a `Tile` based on the `char` provided. Panics on unrecognised `char`.
+        fn from_char(character: char) -> Tile {
+            return match character {
+                '#' => Tile::Wall,
+                'O' => Tile::Crate,
+                '.' => Tile::Empty,
+                '@' => Tile::Robot,
+                symbol => panic!(
+                    "Unknown type of tile in input data. Expected: '#', 'O', '.', or '@', but found {symbol}."
+                )
+            };
+        }
+    
+    } impl<'a> fmt::Display for Tile {
+
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            match self {
+                Tile::Wall  => write!(f, "{}", '#'),
+                Tile::Crate => write!(f, "{}", 'O'),
+                Tile::Empty => write!(f, "{}", '.'),
+                Tile::Robot => write!(f, "{}", '@'),
+            }
+        }
+    }
+
+    //` - - - - - struct Instruction - - - - -
+
+    /// An abstraction for the direction the robot can go into
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    pub enum Instruction { Up, Right, Down, Left, } impl Instruction {
+        
+        /// Returns a `Tile` based on the `char` provided. Panics on unrecognised `char`.
+        fn from_char(character: char) -> Instruction {
+            return match character {
+                '^' => Instruction::Up,
+                '>' => Instruction::Right,
+                'V' | 'v' => Instruction::Down,
+                '<' => Instruction::Left,
+                symbol => panic!(
+                    "Unknown type of instruction in input data. Expected: '^', '>', 'V', 'v', or '<' but found '{}'",
+                    symbol
+                )
+            };
+        }
+
+    } impl<'a> fmt::Display for Instruction {
+        
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            match self {
+                Instruction::Up    => write!(f, "{}", '^'),
+                Instruction::Right => write!(f, "{}", '>'),
+                Instruction::Down  => write!(f, "{}", 'V'),
+                Instruction::Left  => write!(f, "{}", '<'),
+            }
+        }
+    }
+
+    //` - - - - - struct Point - - - - -
+
+    /// An abstraction for a point in 2D space.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
+    pub struct Point { 
+        
+        /// The x-coordinate of the point
+        x: usize, 
+        
+        /// The y-coordinate of the point
+        y: usize 
+
+    } impl Add<Instruction> for Point { type Output = Point;
+    
+        fn add(self, instruction: Instruction) -> Point {
+            return match instruction {
+                Instruction::Up    => Point { x: self.x,     y: self.y - 1 },
+                Instruction::Right => Point { x: self.x + 1, y: self.y     },
+                Instruction::Down  => Point { x: self.x,     y: self.y + 1 },
+                Instruction::Left  => Point { x: self.x - 1, y: self.y     },
+            };
+        }
+
+    } impl<'a> fmt::Display for Point {
+        
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            write!(f, "({}, {})", self.x, self.y)
+        }
+    }
+
+    //` - - - - - fn Solve - - - - -
+
     /// The function that solves the puzzle.
-    pub fn solve(input: &str) -> usize { input.len() }
+    pub fn solve(input: &str) -> usize { 
+        
+        let mut lines = input.lines().enumerate();
+        
+        let mut robot_position = None;
+        let mut map = Vec::new();
+        /* Parsing the input data and creating the map from input data */ {
+            for (y, line) in &mut lines {
+                if line.is_empty() { break; }
+                
+                let mut row = Vec::new();
+                for (x, character) in line.chars().enumerate() {
+                    let tile = Tile::from_char(character);
+                    row.push(tile);
+
+                    if tile != Tile::Robot { continue; }
+                    if robot_position.is_some() { panic!("There be at most 1 robot in input data, found more.") } 
+                    
+                    robot_position = Some(Point {x, y})
+                }
+
+                map.push(row);
+            }
+        }
+    
+        // Checking integrity of the state we expect the data to be in
+        if robot_position.is_none() { panic!("Must be at least 1 robot in input data, found 0.") }
+        let mut robot_position = robot_position.unwrap();
+        assert!(map[robot_position.y][robot_position.x] == Tile::Robot);
+
+        let mut instructions = Vec::new();
+        /* Parsing the input data and creating the instructions from input data */ {
+            for (_, line) in lines { 
+                for character in line.chars() {
+                    let instruction = Instruction::from_char(character);
+                    instructions.push(instruction);
+                }
+            }
+        }
+
+        /* Simulating the robot on the instructions */ {
+            for instruction in instructions.into_iter() {
+  
+                let mut ran_into_wall = false;
+                let mut queue = VecDeque::new();
+                let mut next_point = robot_position;
+                queue.push_front(next_point);
+                loop {
+                    
+                    next_point = next_point + instruction;
+                    queue.push_front(next_point);
+                    
+                    if map[next_point.y][next_point.x] == Tile::Empty { break; }
+                    if map[next_point.y][next_point.x] == Tile::Wall { 
+                        ran_into_wall = true;
+                        break;
+                    }
+                }
+                
+                if ran_into_wall { continue; } // ignore instruction.
+
+                let mut previous_point = None;
+                for point in queue {
+                    if previous_point.is_none() {
+                        previous_point = Some(point);
+                        continue;
+                    }
+
+                    map[previous_point.unwrap().y][previous_point.unwrap().x] = map[point.y][point.x];
+                    previous_point = Some(point);
+                }
+                
+                map[previous_point.unwrap().y][previous_point.unwrap().x] = Tile::Empty;
+                robot_position = robot_position + instruction;
+            }
+        }
+
+        let mut result = 0;
+        /* Calculating the GPS values for each crate and adding them up. */ {
+            for (y, row) in map.into_iter().enumerate() {
+                for (x, tile) in row.into_iter().enumerate() {
+                    result += match tile {
+                        Tile::Empty => 0,
+                        Tile::Wall  => 0,
+                        Tile::Robot => 0,
+                        Tile::Crate => x + 100*y,
+                    };
+                }
+            }
+        }
+
+        return result;
+    }
 
 }
 
