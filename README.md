@@ -12,15 +12,15 @@
     </a>
 </center>
 <br>
+
+# Advent of Code (2024)
+Advent of Code is an Advent calendar of small programming puzzles for a variety of skill levels that can be solved in any programming language you like. People use them as interview prep, company training, university coursework, practice problems, a speed contest, or to challenge each other. If you'd like to support Advent of Code, you can do so indirectly by helping to share it with others or directly via [AoC++](https://adventofcode.com/2024/support).
+
 <div align="center">
   <center>
     <img src="./logo.png" alt="The Advent of Code logo." height="300em" align="center">
   </center>
 </div>
-
-
-# Advent of Code (2024)
-Advent of Code is an Advent calendar of small programming puzzles for a variety of skill levels that can be solved in any programming language you like. People use them as interview prep, company training, university coursework, practice problems, a speed contest, or to challenge each other. If you'd like to support Advent of Code, you can do so indirectly by helping to share it with others or directly via [AoC++](https://adventofcode.com/2024/support).
 
 I am using it to learn [Rust](http://rust-lang.org/). Rust is a fast, memory-safe, and productive programming language that can run on embedded devices, web services, and more. It's quite a hard language to learn so this is my excuse to finally learn the language. It's been going quite well so far, after about 10 challenges I seem to no longer be fighting the language as much anymore. Now I'm mostly struggling because the challenges are getting harder to solve.
 
@@ -42,8 +42,8 @@ I am using it to learn [Rust](http://rust-lang.org/). Rust is a fast, memory-saf
 | Day 12  | [file](./src/bin/day12.rs) | [link](https://adventofcode.com/2024/day/12) |
 | Day 13  | [file](./src/bin/day13.rs) | [link](https://adventofcode.com/2024/day/13) |
 | Day 14  | [file](./src/bin/day14.rs) | [link](https://adventofcode.com/2024/day/14) |
-<!-- | Day 15  | [file](./src/bin/day15.rs) | [link](https://adventofcode.com/2024/day/15) |
-| Day 16  | [file](./src/bin/day16.rs) | [link](https://adventofcode.com/2024/day/16) |
+| Day 15  | [file](./src/bin/day15.rs) | [link](https://adventofcode.com/2024/day/15) |
+<!-- | Day 16  | [file](./src/bin/day16.rs) | [link](https://adventofcode.com/2024/day/16) |
 | Day 17  | [file](./src/bin/day17.rs) | [link](https://adventofcode.com/2024/day/17) |
 | Day 18  | [file](./src/bin/day18.rs) | [link](https://adventofcode.com/2024/day/18) |
 | Day 19  | [file](./src/bin/day19.rs) | [link](https://adventofcode.com/2024/day/19) |
