@@ -13,6 +13,9 @@
 </center>
 <br>
 
+> [!INFO]
+> This repository has been archived because I never got around to finishing it, and it is almost time for Advent of Code 2025.
+
 # Advent of Code (2024)
 Advent of Code is an Advent calendar of small programming puzzles for a variety of skill levels that can be solved in any programming language you like. People use them as interview prep, company training, university coursework, practice problems, a speed contest, or to challenge each other. If you'd like to support Advent of Code, you can do so indirectly by helping to share it with others or directly via [AoC++](https://adventofcode.com/2024/support).
 
