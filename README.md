@@ -12,8 +12,9 @@
     </a>
 </center>
 <br>
+<br>
 
-> [!INFO]
+> [!NOTE]
 > This repository has been archived because I never got around to finishing it, and it is almost time for Advent of Code 2025.
 
 # Advent of Code (2024)
